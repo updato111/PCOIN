@@ -1,0 +1,50 @@
+services:
+  postgres:
+    image: postgres:16.2
+    ports:
+      - 5432:5432
+    restart: always
+    user: root    
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5  
+    volumes:
+      - pcoin-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: "7Mfja23g8SsCaV7tdKebzAKD"
+      POSTGRES_DB: "pcoin"
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    image: pcoin-server:1
+    ports:
+      - 3000:3000
+    restart: always
+    volumes:
+      - pcoin-server-uploads:/app/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql://postgres:7Mfja23g8SsCaV7tdKebzAKD@postgres:5432/pcoin?schema=public
+      - JWT_SECRET=akdfowenvow!92$Sfan@jadfnafdNAW
+      - BOT_TOKEN=6890489071:AAFw-O1lIPvvL2aI_nDSyaQukRNqJxx9xGg
+
+  bot:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.bot
+    image: pcoin-bot:1
+    restart: always
+    environment:
+      - DATABASE_URL=postgresql://postgres:7Mfja23g8SsCaV7tdKebzAKD@postgres:5432/pcoin?schema=public
+      - JWT_SECRET=akdfowenvow!92$Sfan@jadfnafdNAW
+      - BOT_TOKEN=6890489071:AAFw-O1lIPvvL2aI_nDSyaQukRNqJxx9xGg
+
+volumes:
+  pcoin-data:
+  pcoin-server-uploads:

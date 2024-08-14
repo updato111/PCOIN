@@ -1,0 +1,9 @@
+.coin {
+  pointer-events: none;
+  transition: transform 1.5s ease, opacity 1.5s ease;
+}
+
+.coin.animate {
+  transform: translate(0px, -200px) scale(0.9);
+  opacity: 0;
+}

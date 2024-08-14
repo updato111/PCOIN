@@ -1,0 +1,35 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "bot": "node bot.js",
+    "build": "npx prisma generate"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "5.13.0",
+    "axios": "^1.7.2",
+    "bottleneck": "^2.19.5",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "download": "^8.0.0",
+    "express": "^4.19.2",
+    "file-type": "^19.0.0",
+    "http-errors": "^2.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "nanoid": "^5.0.7",
+    "telegraf": "^4.8.1",
+    "telegraf-ratelimit": "^2.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15",
+    "prisma": "5.13.0"
+  }
+}

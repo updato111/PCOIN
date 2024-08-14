@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id                           Int       @id @default(autoincrement())
+  username                     String    @unique(map: "unique_username")
+  first_name                   String?
+  last_name                    String?
+  login_type                   LoginType @default(TELEGRAM)
+  created_at                   DateTime  @default(now())
+  updated_at                   DateTime  @updatedAt
+  current_hp                   Int       @default(3500)
+  max_hp                       Int       @default(3500)
+  last_Known_hp_time           DateTime  @default(now()) // (timestamp when `current_hp` was last updated)
+  last_login_time              DateTime  @default(now())
+  earned_coins                 BigInt    @default(0)
+  total_earned_coins_by_invite Int       @default(0)
+  total_comissions             Int       @default(0)
+  image_url                    String?
+  last_image_changed           DateTime  @default(now())
+  referralCode                 String    @unique
+  referredBy                   user?     @relation("Referrals", fields: [referredById], references: [id])
+  referredById                 Int?
+  referrals                    user[]    @relation("Referrals")
+  is_premium                   Boolean   @default(false)
+  last_daily_earn_claim        DateTime  @default(now())
+  last_monthly_earn_claim      DateTime  @default(now())
+  claimed_ranks                String[]
+  telegram_channel_task        Boolean   @default(false)
+  twitter_channel_task         Boolean   @default(false)
+  coin_per_click               Int       @default(1)
+  claimed_commissions          BigInt    @default(0)
+}
+
+enum LoginType {
+  LOCAL
+  TELEGRAM
+}
